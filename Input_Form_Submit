@@ -1,0 +1,69 @@
+package LambdaTest_Project;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class Input_Form_Submit {
+
+    public static void main(String[] args) throws InterruptedException {
+
+        ChromeDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+
+        // 1. Open Selenium Playground
+        driver.get("https://www.lambdatest.com/selenium-playground");
+
+        // Click “Input Form Submit”
+        driver.findElement(By.linkText("Input Form Submit")).click();
+
+        // 2. Click Submit without entering any data
+        WebElement submitBtn = driver.findElement(By.xpath("//button[@type='submit']"));
+        submitBtn.click();
+
+        // 3. Assert browser validation message "Please fill out this field."
+        WebElement nameField = driver.findElement(By.id("name"));
+        String validationMsg = nameField.getAttribute("validationMessage");
+
+        if (validationMsg.contains("Please fill out this field")) {
+            System.out.println("PASS: Validation message displayed → " + validationMsg);
+        } else {
+            System.out.println("FAIL: Validation message not matched.");
+        }
+
+        // 4. Fill all fields
+        nameField.sendKeys("John Doe");
+        driver.findElement(By.id("inputEmail4")).sendKeys("john.doe@test.com");
+        driver.findElement(By.id("inputPassword4")).sendKeys("Password123");
+        driver.findElement(By.id("company")).sendKeys("LambdaTest");
+        driver.findElement(By.id("websitename")).sendKeys("www.lambdatest.com");
+
+        // 5. Select United States using text property
+        Select country = new Select(driver.findElement(By.name("country")));
+        country.selectByVisibleText("United States");
+
+        driver.findElement(By.id("inputCity")).sendKeys("New York");
+        driver.findElement(By.id("inputAddress1")).sendKeys("123 Test Street");
+        driver.findElement(By.id("inputAddress2")).sendKeys("Suite 12B");
+        driver.findElement(By.id("inputState")).sendKeys("NY");
+        driver.findElement(By.id("inputZip")).sendKeys("10001");
+
+        // 6. Click Submit
+        submitBtn.click();
+        Thread.sleep(2000);
+
+        // 7. Validate success message
+        WebElement successMsg = driver.findElement(By.xpath("//p[@class='success-msg hidden']"));
+        String actualSuccessMsg = successMsg.getText();
+        String expectedSuccessMsg = "Thanks for contacting us, we will get back to you shortly.";
+
+        if (actualSuccessMsg.equals(expectedSuccessMsg)) {
+            System.out.println("PASS: Success message displayed → " + actualSuccessMsg);
+        } else {
+            System.out.println("FAIL: Expected → " + expectedSuccessMsg + " | Actual → " + actualSuccessMsg);
+        }
+
+        driver.quit();
+    }
+}
