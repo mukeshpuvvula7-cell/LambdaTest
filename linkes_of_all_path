@@ -1,0 +1,22 @@
+package LambdaTest_Project;
+
+import org.openqa.selenium.By;
+
+public interface all_in_demo {
+	
+	
+	String demo_url = "https://www.lambdatest.com/selenium-playground/simple-form-demo";
+	
+	By text_id = By.id("user-message");
+	
+	By click_on = By.xpath("//button[@id = 'showInput']");
+	
+	By checking_button = By.xpath("//p[@id = 'message']");
+	
+	
+	//drag and drop 
+	String slide_url = "https://www.lambdatest.com/selenium-playground/drag-drop-range-sliders-demo";
+	
+	By slider_locator = By.xpath("//input[@value='15']");
+	By slider_value_box = By.id("range");
+}
