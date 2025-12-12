@@ -1,0 +1,135 @@
+package LambdaTest_Project;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
+
+public class CombinedScript implements all_in_demo {
+
+    ChromeDriver driver;
+
+    public static void main(String[] args) throws InterruptedException {
+        CombinedScript obj = new CombinedScript();
+        obj.simpleFormDemo();
+        obj.sliderDemo();
+        obj.inputFormSubmit();
+    }
+
+
+    // *********************** 1. SIMPLE FORM DEMO ************************
+    public void simpleFormDemo() {
+
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get(demo_url);
+
+        System.out.println("---- Running Simple Form Demo Test ----");
+
+        WebElement for_text = driver.findElement(text_id);
+        String expectedText = "Welcome to LambdaTest.";
+        for_text.sendKeys(expectedText);
+
+        WebElement click_button = driver.findElement(click_on);
+        click_button.click();
+
+        WebElement outputMsg = driver.findElement(checking_button);
+        String actualText = outputMsg.getText();
+
+        if (actualText.equals(expectedText)) {
+            System.out.println("PASS: Simple Form Demo → " + actualText);
+        } else {
+            System.out.println("FAIL: Simple Form Demo → Expected: " + expectedText + " | Actual: " + actualText);
+        }
+
+        driver.quit();
+    }
+
+
+
+    // *********************** 2. SLIDER DEMO ************************
+    public void sliderDemo() throws InterruptedException {
+
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get(slide_url);
+
+        System.out.println("---- Running Slider Demo Test ----");
+
+        WebElement slider = driver.findElement(slider_locator);
+        WebElement slider_value = driver.findElement(slider_value_box);
+
+        Actions act = new Actions(driver);
+
+        while (!slider_value.getText().equals("95")) {
+            act.dragAndDropBy(slider, 5, 0).perform();
+            Thread.sleep(100);
+        }
+
+        if (slider_value.getText().equals("95")) {
+            System.out.println("PASS: Slider reached 95");
+        } else {
+            System.out.println("FAIL: Slider value = " + slider_value.getText());
+        }
+
+        driver.quit();
+    }
+
+
+
+    // *********************** 3. INPUT FORM SUBMIT ************************
+    public void inputFormSubmit() throws InterruptedException {
+
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://www.lambdatest.com/selenium-playground");
+
+        System.out.println("---- Running Input Form Submit Test ----");
+
+        driver.findElement(By.linkText("Input Form Submit")).click();
+
+        WebElement submitBtn = driver.findElement(By.xpath("//button[@type='submit']"));
+        submitBtn.click();
+
+        WebElement nameField = driver.findElement(By.id("name"));
+        String validationMsg = nameField.getAttribute("validationMessage");
+
+        if (validationMsg.contains("Please fill out this field")) {
+            System.out.println("PASS: Validation message displayed");
+        } else {
+            System.out.println("FAIL: Validation message not displayed");
+        }
+
+        nameField.sendKeys("John Doe");
+        driver.findElement(By.id("inputEmail4")).sendKeys("john.doe@test.com");
+        driver.findElement(By.id("inputPassword4")).sendKeys("Password123");
+        driver.findElement(By.id("company")).sendKeys("LambdaTest");
+        driver.findElement(By.id("websitename")).sendKeys("www.lambdatest.com");
+
+        Select country = new Select(driver.findElement(By.name("country")));
+        country.selectByVisibleText("United States");
+
+        driver.findElement(By.id("inputCity")).sendKeys("New York");
+        driver.findElement(By.id("inputAddress1")).sendKeys("123 Test Street");
+        driver.findElement(By.id("inputAddress2")).sendKeys("Suite 12B");
+        driver.findElement(By.id("inputState")).sendKeys("NY");
+        driver.findElement(By.id("inputZip")).sendKeys("10001");
+
+        submitBtn.click();
+        Thread.sleep(2000);
+
+        WebElement successMsg = driver.findElement(By.xpath("//p[@class='success-msg hidden']"));
+        String actualSuccessMsg = successMsg.getText();
+        String expectedSuccessMsg = "Thanks for contacting us, we will get back to you shortly.";
+
+        if (actualSuccessMsg.equals(expectedSuccessMsg)) {
+            System.out.println("PASS: Input Form Submit → " + actualSuccessMsg);
+        } else {
+            System.out.println("FAIL: Expected: " + expectedSuccessMsg + " | Actual: " + actualSuccessMsg);
+        }
+
+        driver.quit();
+    }
+
+}
