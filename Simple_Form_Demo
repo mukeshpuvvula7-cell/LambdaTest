@@ -1,0 +1,38 @@
+	package LambdaTest_Project;
+	
+	import org.openqa.selenium.By;
+	import org.openqa.selenium.WebElement;
+	import org.openqa.selenium.chrome.ChromeDriver;
+	
+	public class Simple_Form_Demo implements all_in_demo {
+	
+		public static void main(String[] args) {
+	
+			ChromeDriver driver = new ChromeDriver();
+			driver.get(demo_url);
+			driver.manage().window().maximize();
+			
+			//now accesing the text
+			WebElement for_text = driver.findElement(text_id);
+			String expectedText  = "Welcome to LambdaTest.";
+			for_text.sendKeys(expectedText );
+			
+			WebElement click_button = driver.findElement(click_on);
+			click_button.click();
+			
+			
+			//vallidation 
+			WebElement outputMsg = driver.findElement(checking_button); // right side displayed msg
+	        String actualText = outputMsg.getText();
+	
+	     
+			if (actualText.equals(expectedText)) {
+	            System.out.println("PASS: Text is correctly displayed → " + actualText);
+	        } else {
+	            System.out.println("FAIL: Expected → " + expectedText  + " | Actual → " + actualText);
+	        }
+	
+	       
+		}
+	
+	}
